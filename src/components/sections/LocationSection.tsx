@@ -1,5 +1,5 @@
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { TripPlannerFormData } from '../types/tripPlanner';
+import { TripPlannerFormData } from '../../types/tripPlanner';
 
 interface LocationSectionProps {
   register: UseFormRegister<TripPlannerFormData>;
