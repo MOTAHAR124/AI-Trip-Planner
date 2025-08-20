@@ -3,7 +3,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
-import { generateTripPlan } from '../lib/langchain';
 import TripPlanDisplay from './TripPlanDisplay';
 import LoadingSkeleton from './LoadingSkeleton';
 import LocationSection from './sections/LocationSection';
@@ -55,10 +54,32 @@ export default function TripPlannerForm() {
         hotelPreference: data.hotelPreference,
         foodPreference: data.foodPreference,
       };
-      
-      const plan = await generateTripPlan(tripRequest);
-      setTripPlan(plan);
-      // Smooth scroll to the generated plan
+
+      const res = await fetch('/api/plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tripRequest),
+      });
+
+      if (!res.ok || !res.body) {
+        const text = await res.text().catch(() => '');
+        throw new Error(text || 'Failed to generate trip plan.');
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        if (value) {
+          const chunk = decoder.decode(value, { stream: !done });
+          setTripPlan((prev) => prev + chunk);
+        }
+      }
+
+      // Smooth scroll to the generated plan once streaming completes
       setTimeout(() => {
         const tripPlanElement = document.getElementById('trip-plan-result');
         if (tripPlanElement) {

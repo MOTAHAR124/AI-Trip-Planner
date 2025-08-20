@@ -1,19 +1,9 @@
+import { NextRequest } from "next/server";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 
-// console.log(process.env.NEXT_PUBLIC_GOOGLE_API_KEY);
-
-if (!process.env.NEXT_PUBLIC_GOOGLE_API_KEY) {
-  throw new Error('Missing NEXT_PUBLIC_GOOGLE_API_KEY environment variable');
-}
-
-const model = new ChatGoogleGenerativeAI({
-  model: "gemini-2.0-flash",
-  maxOutputTokens: 8192,
-  temperature: 0.7,
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-});
+export const runtime = "nodejs"; // ensure server runtime
 
 const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip itinerary with the following details:
     - From: {from}
@@ -93,25 +83,50 @@ const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip it
 
     Format the response in a clear, organized structure with proper markdown syntax and spacing.`);
 
-export const generateTripPlan = async (tripDetails: {
-  from: string;
-  to: string;
-  days: number;
-  adults: number;
-  kids: number;
-  budget: string;
-  hotelPreference: string;
-  foodPreference: string;
-}) => {
+export async function POST(req: NextRequest) {
   try {
-    const chain = tripPlannerPrompt
-      .pipe(model)
-      .pipe(new StringOutputParser());
+    const body = await req.json();
 
-    const result = await chain.invoke(tripDetails);
-    return result;
-  } catch (error) {
-    console.error('Error generating trip plan:', error);
-    throw error;
+    const apiKey = process.env.GOOGLE_API_KEY; // server-only
+    if (!apiKey) {
+      return new Response("Server misconfiguration: missing GOOGLE_API_KEY", { status: 500 });
+    }
+
+    const model = new ChatGoogleGenerativeAI({
+      model: "gemini-2.0-flash",
+      maxOutputTokens: 2048,
+      temperature: 0.7,
+      apiKey,
+    });
+
+    const chain = tripPlannerPrompt.pipe(model).pipe(new StringOutputParser());
+
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      start(controller) {
+        (async () => {
+          try {
+            const iterable = await chain.stream(body);
+            for await (const chunk of iterable) {
+              controller.enqueue(encoder.encode(chunk));
+            }
+            controller.close();
+          } catch (err) {
+            controller.error(err);
+          }
+        })();
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
+      status: 200,
+    });
+  } catch (error: any) {
+    console.error("/api/plan error:", error);
+    return new Response(error?.message || "Failed to generate plan", { status: 500 });
   }
-};
+}
