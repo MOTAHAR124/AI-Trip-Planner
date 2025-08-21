@@ -42,6 +42,11 @@ export default function TripPlannerForm() {
     setError('');
     setTripPlan(''); // Clear previous plan
     
+    // Abort the request if it takes too long
+    const controller = new AbortController();
+    const timeoutMs = 60000; // 60s timeout
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    
     try {
       // Create the request object with proper typing
       const tripRequest: TripPlanRequest = {
@@ -59,11 +64,13 @@ export default function TripPlannerForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(tripRequest),
+        signal: controller.signal,
       });
 
       if (!res.ok || !res.body) {
         const text = await res.text().catch(() => '');
-        throw new Error(text || 'Failed to generate trip plan.');
+        const statusInfo = res.status ? ` (HTTP ${res.status})` : '';
+        throw new Error(text || `Failed to generate trip plan${statusInfo}.`);
       }
 
       const reader = res.body.getReader();
@@ -71,11 +78,19 @@ export default function TripPlannerForm() {
       let done = false;
 
       while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        if (value) {
-          const chunk = decoder.decode(value, { stream: !done });
-          setTripPlan((prev) => prev + chunk);
+        try {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          if (value) {
+            const chunk = decoder.decode(value, { stream: !done });
+            setTripPlan((prev) => prev + chunk);
+          }
+        } catch (readErr: any) {
+          // Handle stream read errors (e.g., upstream 429/timeout mid-stream)
+          const msg = readErr?.name === 'AbortError'
+            ? 'Request timed out. The AI service may be busy. Please try again in a moment.'
+            : 'An error occurred while receiving the plan. Please try again.';
+          throw new Error(msg);
         }
       }
 
@@ -88,9 +103,19 @@ export default function TripPlannerForm() {
       }, 100);
     } catch (err) {
       console.error('Trip plan generation error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to generate trip plan. Please try again.';
+      let errorMessage = 'Failed to generate trip plan. Please try again.';
+      if (err instanceof Error) {
+        if ((err as any).name === 'AbortError') {
+          errorMessage = 'Request timed out. The AI service may be busy. Please try again in a moment.';
+        } else if (/(rate limit|429)/i.test(err.message)) {
+          errorMessage = 'Rate limit exceeded. Please wait a minute and try again.';
+        } else {
+          errorMessage = err.message;
+        }
+      }
       setError(errorMessage);
     } finally {
+      clearTimeout(timeoutId);
       setIsLoading(false);
     }
   };

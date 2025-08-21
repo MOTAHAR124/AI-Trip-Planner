@@ -1,3 +1,3 @@
 git add .
-git commit -m "final touch"
+git commit -m "added time limit if api key doesn't response"
 git push
