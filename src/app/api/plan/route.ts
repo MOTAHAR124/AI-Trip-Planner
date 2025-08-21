@@ -63,9 +63,11 @@ const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip it
     ## Budget Breakdown
     - Accommodation costs
     - Transportation costs
+    - International/intercity travel costs (e.g., flights, trains, buses)
     - Food expenses
     - Activity costs
     - Additional expenses
+    - Visa fees (if required) and approximate processing costs
     - Money-saving tips
 
     ## Travel Tips
