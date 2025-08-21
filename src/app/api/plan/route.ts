@@ -2,10 +2,12 @@ import { NextRequest } from "next/server";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
+import { auth } from "../auth/[...nextauth]/route";
 
 export const runtime = "nodejs"; // ensure server runtime
 
 const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip itinerary with the following details:
+    - User Full Name: {fullName}
     - From: {from}
     - To: {to}
     - Duration: {days} days
@@ -15,6 +17,9 @@ const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip it
     - Food Preference: {foodPreference}
 
     You can also deny any of the requests if you think it is not possible to fulfill because of the budget or other constraints.
+
+    Always address the user directly and include their full name "{fullName}" at least once in the response. 
+    Start the response with a friendly greeting that references their name, and when you reference their name, wrap it in markdown bold like **{fullName}**.
 
     Please provide a detailed day-by-day itinerary in markdown format with the following sections:
 
@@ -86,6 +91,8 @@ const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip it
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const session = await auth();
+    const fullName = session?.user?.name || "Traveler";
 
     const apiKey = process.env.GOOGLE_API_KEY; // server-only
     if (!apiKey) {
@@ -94,7 +101,7 @@ export async function POST(req: NextRequest) {
 
     const model = new ChatGoogleGenerativeAI({
       model: "gemini-2.0-flash",
-      maxOutputTokens: 2048,
+      maxOutputTokens: 8192,
       temperature: 0.7,
       apiKey,
     });
@@ -106,7 +113,7 @@ export async function POST(req: NextRequest) {
       start(controller) {
         (async () => {
           try {
-            const iterable = await chain.stream(body);
+            const iterable = await chain.stream({ ...body, fullName });
             for await (const chunk of iterable) {
               controller.enqueue(encoder.encode(chunk));
             }

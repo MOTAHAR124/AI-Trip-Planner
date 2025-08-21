@@ -99,7 +99,14 @@ export default function TripPlannerForm() {
     setTripPlan('');
     setError('');
     reset();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Navigate to the planner section
+    const plannerSection = document.getElementById('planner');
+    if (plannerSection) {
+      plannerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Fallback to updating the hash to trigger navigation
+      window.location.hash = 'planner';
+    }
   };
 
   // Show loading state during hydration

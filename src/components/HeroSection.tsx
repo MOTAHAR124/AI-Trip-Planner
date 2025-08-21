@@ -1,8 +1,14 @@
+"use client";
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './ui/button';
 
 export default function HeroSection() {
+  const { data: session } = useSession();
+  const fullName = session?.user?.name || '';
+  const firstName = fullName.split(' ')[0] || fullName;
+
   return (
     <div className="relative min-h-[600px] bg-gradient-to-b from-blue-400 to-blue-100">
       {/* Background Pattern */}
@@ -14,6 +20,11 @@ export default function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Text Content */}
           <div className="space-y-8">
+            {session && (
+              <p className="text-5xl font-bold text-gray-900 leading-tight">
+                Hello, <span className="text-blue-600">{firstName}</span>
+              </p>
+            )}
             <h1 className="text-5xl font-bold text-gray-900 leading-tight">
               Plan Your Perfect Trip with{' '}
               <span className="text-blue-600">AI Magic</span>

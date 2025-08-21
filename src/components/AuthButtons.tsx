@@ -7,9 +7,12 @@ export default function AuthButtons() {
   const { data: session } = useSession();
 
   if (session) {
+    const fullName = session.user?.name || 'User';
     return (
       <div className="flex items-center gap-4">
-        <p>Signed in as {session.user?.email}</p>
+        <p className="text-base sm:text-lg font-semibold text-gray-900">
+          {fullName}
+        </p>
         <Button onClick={() => signOut()}>Sign out</Button>
       </div>
     );

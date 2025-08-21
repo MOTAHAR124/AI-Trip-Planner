@@ -1,19 +1,50 @@
 # AI Trip Planner
 
-Plan smarter, faster. AI Trip Planner generates detailed, day-by-day itineraries based on your origin, destination, trip length, group size, budget, hotel and food preferences. It streams a rich markdown itinerary with travel tips, budget breakdowns, dining, and more.
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)](https://tailwindcss.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-0.3-4f46e5)](https://js.langchain.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
 
-Built with Next.js 15, LangChain, and Google Gemini 2.0.
+Plan smarter, faster. AI Trip Planner generates detailed, day‑by‑day itineraries based on your origin, destination, trip length, group size, budget, hotel and food preferences. It streams a rich markdown itinerary with travel tips, budget breakdowns, dining, and more.
+
+Built with Next.js 15, React 19, Tailwind CSS 4, and LangChain + Google Gemini 2.0.
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Demo](#demo)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Install](#clone-and-install)
+  - [Environment Variables](#environment-variables)
+  - [Run Locally](#run-locally)
+- [Usage](#usage)
+- [API](#api)
+- [Project Structure](#project-structure)
+- [Scripts](#scripts)
+- [Authentication (Optional)](#authentication-optional)
+- [Security & Privacy](#security--privacy)
+- [Troubleshooting](#troubleshooting)
+- [Deployment](#deployment)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Features
 
-- **AI-generated itineraries** using `@langchain/google-genai` with the Gemini 2.0 Flash model.
+- **AI‑generated itineraries** using `@langchain/google-genai` (Gemini 2.0 Flash).
 - **Streaming responses** from `POST /api/plan` for a responsive UX.
 - **Form validation** with `zod` and `react-hook-form`.
 - **Polished UI** with Tailwind CSS and modular React components.
-- **Detailed prompt design** to generate structured markdown (overview, daily plan, hotels, transport, dining, budget, tips).
-- **Error handling** with user-friendly messaging and loading skeletons.
+- **Prompt design** to generate structured markdown (overview, daily plan, hotels, transport, dining, budget, tips).
+- **Error handling** with user‑friendly messaging and loading skeletons.
+- **Optional Auth** via NextAuth; falls back to a generic name when unauthenticated.
 
 ---
 
@@ -24,8 +55,24 @@ Built with Next.js 15, LangChain, and Google Gemini 2.0.
 - **AI/LLM**: LangChain `@langchain/google-genai` (Gemini 2.0 Flash)
 - **Forms & Validation**: react-hook-form, zod, @hookform/resolvers
 - **Styling**: Tailwind CSS 4
-- **Auth (optional scaffolding)**: next-auth (not required for core flow)
-- **Utilities**: clsx, class-variance-authority, lucide-react
+- **Auth (optional)**: next-auth
+- **Utilities**: clsx, class-variance-authority, lucide-react, markdown-to-jsx
+
+---
+
+## Demo
+
+- Below is a real screenshot from `public/travel-1.jpg`:
+
+```md
+![Planner UI](./public/travel-1.jpg)
+```
+
+- Optional GIF: add a file at `public/demo.gif` and reference it:
+
+```md
+![Demo](./public/demo.gif)
+```
 
 ---
 
@@ -40,7 +87,7 @@ Built with Next.js 15, LangChain, and Google Gemini 2.0.
 
 ```bash
 # Clone
-git clone https://github.com/<your-username>/AI-Trip-Planner.git
+git clone https://github.com/MOTAHAR124/AI-Trip-Planner.git
 cd AI-Trip-Planner
 
 # Install deps
@@ -54,15 +101,40 @@ This project reads separate keys for server and client usage:
 - Server: `GOOGLE_API_KEY` (used in `src/app/api/plan/route.ts`)
 - Client: `NEXT_PUBLIC_GOOGLE_API_KEY` (used in `src/lib/langchain.ts`)
 
-Create a `.env.local` file in the project root:
+Create a `.env` or `.env.local` file in the project root (either works for Next.js):
 
 ```bash
-# .env.local
+# .env or .env.local
 GOOGLE_API_KEY=your_server_side_gemini_key
 NEXT_PUBLIC_GOOGLE_API_KEY=your_client_side_gemini_key
 ```
 
-Note: Keep server and client keys distinct if your security model requires it. The app will throw if these are missing.
+Notes:
+- Keys are required; the app throws or responds 500 if missing.
+- Keep server and client keys distinct if your security model requires it.
+- Next.js loads `.env*` files; `.env.local` is typically git-ignored for local secrets.
+
+#### Quick copy-paste for `.env` (or `.env.local`)
+
+```env
+# Required - Server (used in src/app/api/plan/route.ts)
+GOOGLE_API_KEY=your_server_side_gemini_key
+
+# Required - Client (used in src/lib/langchain.ts)
+NEXT_PUBLIC_GOOGLE_API_KEY=your_client_side_gemini_key
+```
+
+#### Optional (only if you enable NextAuth)
+
+```env
+# NextAuth core
+# NEXTAUTH_URL=http://localhost:3000
+# NEXTAUTH_SECRET=your_strong_random_secret  # Note: use NEXTAUTH_SECRET (not AUTH_SECRET)
+
+# Google provider (used in src/app/api/auth/[...nextauth]/route.ts)
+# GOOGLE_CLIENT_ID=your_google_oauth_client_id
+# GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+```
 
 ### Run Locally
 
@@ -75,7 +147,7 @@ npm run build
 npm start
 ```
 
-Then open http://localhost:3000
+Open http://localhost:3000
 
 ---
 
@@ -88,9 +160,9 @@ Then open http://localhost:3000
 
 Key files involved:
 
-- `src/components/TripPlannerForm.tsx` — Collects inputs, validates with `zod`, calls API, handles streaming.
-- `src/app/api/plan/route.ts` — Streams AI output using LangChain and Gemini.
-- `src/lib/langchain.ts` — Client-side model/prompt utility (requires `NEXT_PUBLIC_GOOGLE_API_KEY`).
+- `src/components/TripPlannerForm.tsx` — Submits request, validates with `zod`, handles streaming and UI.
+- `src/app/api/plan/route.ts` — Streams AI output using LangChain and Gemini; uses `GOOGLE_API_KEY` and optional NextAuth session to personalize with a full name.
+- `src/lib/langchain.ts` — Client‑side model/prompt helper (requires `NEXT_PUBLIC_GOOGLE_API_KEY`).
 - `src/types/tripPlanner.ts` — Types and validation schema.
 
 ---
@@ -99,7 +171,7 @@ Key files involved:
 
 ### POST /api/plan
 
-Streams a text/plain markdown itinerary.
+Streams a `text/plain` markdown itinerary.
 
 Request body (JSON):
 
@@ -134,45 +206,9 @@ curl -N \
   }'
 ```
 
-Note: Response is streamed. Some terminals may buffer; use `-N` with curl to disable buffering.
-
----
-
-## Example Code Snippets
-
-- Schema and types (`src/types/tripPlanner.ts`):
-
-```ts
-export interface TripPlanRequest {
-  from: string;
-  to: string;
-  days: number;
-  adults: number;
-  kids: number;
-  budget: string;
-  hotelPreference: string;
-  foodPreference: string;
-}
-```
-
-- Fetching and reading a stream (`src/components/TripPlannerForm.tsx`):
-
-```ts
-const res = await fetch('/api/plan', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(tripRequest),
-});
-
-const reader = res.body!.getReader();
-const decoder = new TextDecoder();
-let done = false;
-while (!done) {
-  const { value, done: doneReading } = await reader.read();
-  done = doneReading;
-  if (value) setTripPlan(prev => prev + decoder.decode(value, { stream: !done }));
-}
-```
+Notes:
+- Response is streamed; use `-N` with curl to disable buffering.
+- If NextAuth is configured and the user is logged in, the response greets them by name; otherwise it addresses "Traveler".
 
 ---
 
@@ -203,13 +239,74 @@ while (!done) {
 
 ---
 
+## Scripts
+
+From `package.json`:
+
+```bash
+npm run dev     # Start dev server
+npm run build   # Build for production
+npm run start   # Start production server
+npm run lint    # Lint the project
+```
+
+---
+
+## Authentication (Optional)
+
+- NextAuth is scaffolded under `src/app/api/auth/[...nextauth]/`.
+- The planner works without signing in; the API greets users by the session name when present.
+- If enabling auth in UI, ensure providers and session handling are configured per NextAuth docs.
+
+### Google NextAuth Setup
+
+1. Create a project at Google Cloud Console → OAuth consent screen.
+   - User type: External
+   - Scopes: `email`, `profile`
+2. Create OAuth 2.0 Client ID (Web application):
+   - Authorized redirect URI (local): `http://localhost:3000/api/auth/callback/google`
+   - Add your production URL later: `https://your-domain.com/api/auth/callback/google`
+3. Add env vars to `.env` or `.env.local`:
+
+```env
+NEXTAUTH_SECRET=your_strong_random_secret
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+# NEXTAUTH_URL=http://localhost:3000    # set in production too
+```
+
+4. Restart the dev server: `npm run dev`.
+5. Wire a sign-in button in your UI (optional) using `next-auth`:
+   - In a client component: `import { signIn } from "next-auth/react";` then `onClick={() => signIn('google')}`.
+   - Or navigate to `/api/auth/signin` to use the default NextAuth sign-in page.
+
+---
+
+## Security & Privacy
+
+- `NEXT_PUBLIC_GOOGLE_API_KEY` is exposed to the browser by design (Next.js `NEXT_PUBLIC_` prefix). Use a limited-scope client key.
+- Keep your server `GOOGLE_API_KEY` secret; never expose it on the client.
+- Do not commit env files. Prefer `.env.local` for local secrets.
+
+---
+
+## Troubleshooting
+
+- "Missing NEXT_PUBLIC_GOOGLE_API_KEY" error in browser: set `NEXT_PUBLIC_GOOGLE_API_KEY` in `.env` or `.env.local` and restart dev server.
+- 500 from `/api/plan`: ensure `GOOGLE_API_KEY` is set and valid.
+- If using NextAuth and sign-in fails: confirm you used `NEXTAUTH_SECRET` (not `AUTH_SECRET`) and set `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`.
+- Slow or truncated responses: verify Gemini API quotas and network; streaming is plain text with backpressure.
+- Tailwind styles not applying: confirm `globals.css` is imported in `src/app/layout.tsx` and Tailwind v4 postcss plugin is installed.
+
+---
+
 ## Deployment
 
-- The app is compatible with platforms that support Next.js 15 (e.g., Vercel).
-- Ensure environment variables are configured in your hosting provider:
+- Compatible with platforms that support Next.js 15 (e.g., Vercel).
+- Configure env vars in your hosting provider:
   - `GOOGLE_API_KEY` (server)
   - `NEXT_PUBLIC_GOOGLE_API_KEY` (client)
-- The `api/plan` route uses `runtime = "nodejs"` and streams responses. Confirm streaming is supported in your hosting environment.
+- The `api/plan` route uses `runtime = "nodejs"` and streams responses. Ensure streaming is supported.
 
 ### Vercel (example)
 
@@ -217,6 +314,35 @@ while (!done) {
 2. Import the project in Vercel.
 3. Add env vars in Vercel Project Settings.
 4. Deploy.
+
+### .env.local.example (add this file to repo root)
+
+Create `/.env.local.example` with placeholders to help contributors:
+
+```env
+# Server
+GOOGLE_API_KEY=
+
+# Client
+NEXT_PUBLIC_GOOGLE_API_KEY=
+
+# NextAuth (optional)
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+Do not commit a real `.env.local`; keep secrets out of version control.
+
+---
+
+## Roadmap
+
+- [ ] Add destination images and map embeds
+- [ ] Add itinerary export (PDF/Markdown)
+- [ ] Persist user plans (auth + DB)
+- [ ] Add rate limiting and usage analytics
 
 ---
 
@@ -257,20 +383,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
-
----
-
-## Badges / Screenshots (Optional)
-
-You can add shields.io badges and screenshots for better presentation. Example:
-
-```md
-![CI](https://img.shields.io/badge/build-passing-brightgreen)
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
-```
-
-Place screenshots in `public/` and reference them like:
-
-```md
-![Homepage](./public/homepage-screenshot.jpg)
