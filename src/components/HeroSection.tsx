@@ -52,33 +52,33 @@ export default function HeroSection() {
 
           {/* Right Column - Image Grid */}
           <div className="relative h-[500px]">
-            <div className="absolute top-0 right-0 w-72 h-72">
+            <div className="absolute top-0 right-0 w-72 h-72 group hover:z-10 cursor-pointer">
               <Image
                 src="/travel-1.jpg"
                 alt="Travel destination"
                 fill
                 sizes="288px"
-                className="rounded-2xl object-cover shadow-xl"
+                className="rounded-2xl object-cover shadow-xl transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:-rotate-2 group-hover:shadow-2xl group-hover:-translate-y-1 group-hover:translate-x-1"
                 priority
               />
             </div>
-            <div className="absolute bottom-0 left-0 w-72 h-72">
+            <div className="absolute bottom-0 left-0 w-72 h-72 group hover:z-10 cursor-pointer">
               <Image
                 src="/travel-2.jpg"
                 alt="Travel experience"
                 fill
                 sizes="288px"
-                className="rounded-2xl object-cover shadow-xl"
+                className="rounded-2xl object-cover shadow-xl transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:rotate-2 group-hover:shadow-2xl group-hover:translate-y-1 group-hover:-translate-x-1"
                 priority
               />
             </div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 group hover:z-10 cursor-pointer">
               <Image
                 src="/travel-3.jpg"
                 alt="Travel adventure"
                 fill
                 sizes="288px"
-                className="rounded-2xl object-cover shadow-xl"
+                className="rounded-2xl object-cover shadow-xl transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:-rotate-1 group-hover:shadow-2xl group-hover:-translate-y-1"
                 priority
               />
             </div>
