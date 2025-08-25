@@ -134,8 +134,9 @@ export async function POST(req: NextRequest) {
       },
       status: 200,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("/api/plan error:", error);
-    return new Response(error?.message || "Failed to generate plan", { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Failed to generate plan";
+    return new Response(errorMessage, { status: 500 });
   }
 }

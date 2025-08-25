@@ -1,5 +1,6 @@
 import Markdown from 'markdown-to-jsx';
 import { useMemo, useCallback } from 'react';
+import Image from 'next/image';
 
 interface TripPlanDisplayProps {
   tripPlan: string;
@@ -111,7 +112,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
               overrides: {
                 h1: {
                   component: ({ children, ...props }) => {
-                    const text = Array.isArray(children) ? children.join(' ') : (children as any);
+                    const text = Array.isArray(children) ? children.join(' ') : String(children);
                     return (
                       <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-8 sm:mt-12 mb-4 sm:mb-6 first:mt-0 pb-2 sm:pb-3 border-b-2 border-blue-100" {...props}>
                         {text}
@@ -121,7 +122,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                 },
                 h2: {
                   component: ({ children, ...props }) => {
-                    const raw = Array.isArray(children) ? children.join(' ') : (children as any);
+                    const raw = Array.isArray(children) ? children.join(' ') : String(children);
                     const slug = slugify(String(raw));
                     return (
                       <h2 id={slug} className="group scroll-mt-24 text-xl sm:text-2xl font-bold text-gray-800 mt-8 sm:mt-10 mb-3 sm:mb-4 flex items-center" {...props}>
@@ -235,9 +236,15 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                   ),
                 },
                 img: {
-                  component: ({ ...props }) => (
-                    // Ensure images scale within the container on small screens
-                    <img className="max-w-full h-auto rounded" {...props} />
+                  component: ({ alt, ...props }) => (
+                    // Use Next.js Image component for better performance and add alt prop
+                    <Image 
+                      className="max-w-full h-auto rounded" 
+                      alt={alt || "Trip plan image"} 
+                      width={800} 
+                      height={600} 
+                      {...props} 
+                    />
                   ),
                 },
               },

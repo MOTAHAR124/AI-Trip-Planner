@@ -85,9 +85,9 @@ export default function TripPlannerForm() {
             const chunk = decoder.decode(value, { stream: !done });
             setTripPlan((prev) => prev + chunk);
           }
-        } catch (readErr: any) {
+        } catch (readErr: unknown) {
           // Handle stream read errors (e.g., upstream 429/timeout mid-stream)
-          const msg = readErr?.name === 'AbortError'
+          const msg = readErr instanceof Error && readErr.name === 'AbortError'
             ? 'Request timed out. The AI service may be busy. Please try again in a moment.'
             : 'An error occurred while receiving the plan. Please try again.';
           throw new Error(msg);
@@ -101,11 +101,11 @@ export default function TripPlannerForm() {
           tripPlanElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }, 100);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Trip plan generation error:', err);
       let errorMessage = 'Failed to generate trip plan. Please try again.';
       if (err instanceof Error) {
-        if ((err as any).name === 'AbortError') {
+        if (err.name === 'AbortError') {
           errorMessage = 'Request timed out. The AI service may be busy. Please try again in a moment.';
         } else if (/(rate limit|429)/i.test(err.message)) {
           errorMessage = 'Rate limit exceeded. Please wait a minute and try again.';
