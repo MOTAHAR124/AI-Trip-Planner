@@ -1,3 +1,3 @@
-import { handlers } from "@/lib/auth";
+import { handlers } from "@shadcn/ui/lib/auth";
 
 export const { GET, POST } = handlers;
