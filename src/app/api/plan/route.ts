@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
-import { auth } from "../auth/[...nextauth]/route";
+import { auth } from "@shadcn/ui/lib/auth";
 
 export const runtime = "nodejs"; // ensure server runtime
 
