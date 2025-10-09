@@ -15,6 +15,7 @@ const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip it
     - Budget: {budget} in INR
     - Hotel Preference: {hotelPreference}
     - Food Preference: {foodPreference}
+    - Additional Details: {additionalDetails}
 
     You can also deny any of the requests if you think it is not possible to fulfill because of the budget or other constraints.
 
@@ -115,7 +116,11 @@ export async function POST(req: NextRequest) {
       start(controller) {
         (async () => {
           try {
-            const iterable = await chain.stream({ ...body, fullName });
+            const iterable = await chain.stream({
+              ...body,
+              fullName,
+              additionalDetails: body?.additionalDetails ?? 'N/A',
+            });
             for await (const chunk of iterable) {
               controller.enqueue(encoder.encode(chunk));
             }

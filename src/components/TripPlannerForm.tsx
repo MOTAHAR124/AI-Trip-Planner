@@ -9,6 +9,7 @@ import LocationSection from './sections/LocationSection';
 import TravelDetailsSection from './sections/TravelDetailsSection';
 import BudgetSection from './sections/Budget&HotelSection';
 import FoodPreferencesSection from './sections/FoodPreferencesSection';
+import AdditionalDetailsSection from './sections/AdditionalDetailsSection';
 import FormButtons from './FormButtons';
 import ErrorDisplay from './ErrorDisplay';
 import { 
@@ -30,6 +31,9 @@ export default function TripPlannerForm() {
     reset,
   } = useForm<TripPlannerFormData>({
     resolver: zodResolver(tripPlannerSchema),
+    defaultValues: {
+      additionalDetails: '',
+    },
   });
 
   // Ensure component is mounted before rendering form inputs
@@ -58,6 +62,7 @@ export default function TripPlannerForm() {
         budget: data.budget,
         hotelPreference: data.hotelPreference,
         foodPreference: data.foodPreference,
+        additionalDetails: data.additionalDetails || undefined,
       };
 
       const res = await fetch('/api/plan', {
@@ -149,6 +154,8 @@ export default function TripPlannerForm() {
             <BudgetSection register={register} errors={errors} />
             <FoodPreferencesSection register={register} errors={errors} />
           </div>
+          {/* Additional Detail at the very bottom */}
+          <AdditionalDetailsSection register={register} errors={errors} />
         </div>
 
         <FormButtons 

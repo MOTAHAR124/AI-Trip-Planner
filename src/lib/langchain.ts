@@ -23,6 +23,7 @@ const tripPlannerPrompt = PromptTemplate.fromTemplate(`Create a detailed trip it
     - Budget: {budget} in INR
     - Hotel Preference: {hotelPreference}
     - Food Preference: {foodPreference}
+    - Additional Details: {additionalDetails}
 
     You can also deny any of the requests if you think it is not possible to fulfill because of the budget or other constraints.
 
@@ -104,13 +105,17 @@ export const generateTripPlan = async (tripDetails: {
   budget: string;
   hotelPreference: string;
   foodPreference: string;
+  additionalDetails?: string;
 }) => {
   try {
     const chain = tripPlannerPrompt
       .pipe(model)
       .pipe(new StringOutputParser());
 
-    const result = await chain.invoke(tripDetails);
+    const result = await chain.invoke({
+      ...tripDetails,
+      additionalDetails: tripDetails.additionalDetails ?? 'N/A',
+    });
     return result;
   } catch (error) {
     console.error('Error generating trip plan:', error);

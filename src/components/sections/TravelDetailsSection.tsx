@@ -43,7 +43,9 @@ export default function TravelDetailsSection({ register, errors }: TravelDetails
             <label className="block text-sm font-medium text-gray-700 mb-1">Kids</label>
             <input
               type="number"
-              {...register('kids', { valueAsNumber: true })}
+              {...register('kids', {
+                setValueAs: (v) => (v === '' || v === null || v === undefined ? 0 : Number(v)),
+              })}
               className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 text-black font-semibold focus:ring-blue-500 focus:border-blue-500 transition-colors"
               min="0"
               suppressHydrationWarning={true}
