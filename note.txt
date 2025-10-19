@@ -1,3 +1,3 @@
 git add .
-git commit -m "added Aditional Detail"
+git commit -m "updated all the dependencies"
 git push

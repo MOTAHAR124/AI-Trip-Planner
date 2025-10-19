@@ -1,7 +1,8 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useState, useEffect } from 'react';
 import TripPlanDisplay from './TripPlanDisplay';
 import LoadingSkeleton from './LoadingSkeleton';
@@ -14,9 +15,9 @@ import FormButtons from './FormButtons';
 import ErrorDisplay from './ErrorDisplay';
 import { 
   TripPlanRequest, 
-  TripPlannerFormData, 
   tripPlannerSchema 
 } from '../types/tripPlanner';
+import { fromTheme } from 'tailwind-merge';
 
 export default function TripPlannerForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,8 +30,9 @@ export default function TripPlannerForm() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<TripPlannerFormData>({
-    resolver: zodResolver(tripPlannerSchema),
+  } = useForm({
+    // Cast through unknown to a typed Resolver to satisfy TypeScript and ESLint
+    resolver: zodResolver(tripPlannerSchema) as unknown as Resolver<z.infer<typeof tripPlannerSchema>>, 
     defaultValues: {
       additionalDetails: '',
     },
@@ -41,7 +43,7 @@ export default function TripPlannerForm() {
     setIsMounted(true);
   }, []);
 
-  const onSubmit = async (data: TripPlannerFormData) => {
+  const onSubmit = async (data: z.infer<typeof tripPlannerSchema>) => {
     setIsLoading(true);
     setError('');
     setTripPlan(''); // Clear previous plan
