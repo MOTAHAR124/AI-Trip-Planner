@@ -11,7 +11,7 @@ export default function AdditionalDetailsSection({ register, errors }: Additiona
     <div className="space-y-2 mt-6">
       <h3 className="text-xl font-semibold text-gray-900 flex items-center">
         <span className="w-1 h-6 bg-blue-500 rounded-full mr-3"></span>
-        Additional Detail *
+        Additional Detail*
       </h3>
       <textarea
         {...register('additionalDetails')}

@@ -40,7 +40,7 @@ export default function TravelDetailsSection({ register, errors }: TravelDetails
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Kids</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kids*</label>
             <input
               type="number"
               {...register('kids', {
