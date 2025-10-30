@@ -17,7 +17,6 @@ import {
   TripPlanRequest, 
   tripPlannerSchema 
 } from '../types/tripPlanner';
-import { fromTheme } from 'tailwind-merge';
 
 export default function TripPlannerForm() {
   const [isLoading, setIsLoading] = useState(false);
