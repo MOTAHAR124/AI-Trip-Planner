@@ -9,7 +9,7 @@ if (!process.env.NEXT_PUBLIC_GOOGLE_API_KEY) {
 }
 
 const model = new ChatGoogleGenerativeAI({
-  model: "gemini-2.0-flash",
+  model: "gemini-2.5-flash",
   maxOutputTokens: 8192,
   temperature: 0.7,
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
