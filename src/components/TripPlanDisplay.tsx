@@ -46,7 +46,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
     <div className="mt-6 sm:mt-8 bg-white rounded-2xl shadow-xl overflow-hidden">
       <div className="p-4 sm:p-6 md:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Your Trip Plan</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Your Trip Plan</h2>
           <div className="flex flex-wrap items-center gap-2 print:hidden">
             <span className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-blue-600 bg-blue-50 rounded-full border border-blue-200">
               ✨ AI Generated
@@ -135,7 +135,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                   component: ({ children, ...props }) => {
                     const text = Array.isArray(children) ? children.join(' ') : String(children);
                     return (
-                      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-8 sm:mt-12 mb-4 sm:mb-6 first:mt-0 pb-2 sm:pb-3 border-b-2 border-blue-100" {...props}>
+                      <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-8 sm:mt-12 mb-4 sm:mb-6 first:mt-0 pb-2 sm:pb-3 border-b-2 border-blue-100" {...props}>
                         {text}
                       </h1>
                     );
@@ -146,7 +146,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                     const raw = Array.isArray(children) ? children.join(' ') : String(children);
                     const slug = slugify(String(raw));
                     return (
-                      <h2 id={slug} className="group scroll-mt-24 text-xl sm:text-2xl font-bold text-gray-800 mt-8 sm:mt-10 mb-3 sm:mb-4 flex items-center" {...props}>
+                      <h2 id={slug} className="group scroll-mt-24 text-lg sm:text-xl font-bold text-gray-800 mt-8 sm:mt-10 mb-3 sm:mb-4 flex items-center" {...props}>
                         <span className="w-1 h-6 sm:h-8 bg-blue-500 rounded-full mr-3" />
                         {raw}
                         <a href={`#${slug}`} className="ml-2 opacity-0 group-hover:opacity-100 text-blue-500" aria-label="Anchor">
@@ -158,7 +158,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                 },
                 h3: {
                   component: ({ children, ...props }) => (
-                    <h3 className="text-xl sm:text-2xl font-semibold text-gray-700 mt-6 sm:mt-8 mb-2 sm:mb-3 flex items-center" {...props}>
+                    <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mt-6 sm:mt-8 mb-2 sm:mb-3 flex items-center" {...props}>
                       <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full mr-2"></span>
                       {children}
                     </h3>

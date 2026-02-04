@@ -1,11 +1,15 @@
 import TripPlannerForm from '../components/TripPlannerForm';
 import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
+import type { Metadata } from "next";
+import { SITE_NAME } from "../lib/seo";
 
 // 👇 Add this to set the browser tab title and description
-export const metadata = {
-  title: 'AI Trip Planner', // <- Change to your desired website name
-  description: 'Plan your perfect trip with AI-powered recommendations.',
+export const metadata: Metadata = {
+  title: SITE_NAME,
+  description:
+    "Generate personalized, end-to-end travel itineraries in seconds—optimized daily schedules, attractions, and activities based on your preferences.",
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {

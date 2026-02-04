@@ -79,7 +79,6 @@ export default function HeroSection() {
                 fill
                 sizes="288px"
                 className="rounded-2xl object-cover shadow-xl transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:rotate-2 group-hover:shadow-2xl group-hover:translate-y-1 group-hover:-translate-x-1"
-                priority
               />
             </div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 group hover:z-10 cursor-pointer">
@@ -89,7 +88,6 @@ export default function HeroSection() {
                 fill
                 sizes="288px"
                 className="rounded-2xl object-cover shadow-xl transition-all duration-300 ease-out transform-gpu group-hover:scale-105 group-hover:-rotate-1 group-hover:shadow-2xl group-hover:-translate-y-1"
-                priority
               />
             </div>
           </div>
