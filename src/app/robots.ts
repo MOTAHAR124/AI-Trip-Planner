@@ -6,10 +6,15 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: isProd
-      ? [{ userAgent: "*", allow: "/" }]
+      ? [
+          {
+            userAgent: "*",
+            allow: "/",
+            disallow: ["/api/", "/_next/"],
+          },
+        ]
       : [{ userAgent: "*", disallow: "/" }],
     sitemap: isProd ? `${SITE_URL}/sitemap.xml` : undefined,
     host: SITE_URL,
   };
 }
-

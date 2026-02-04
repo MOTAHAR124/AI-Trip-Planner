@@ -166,7 +166,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                 },
                 p: {
                   component: ({ children, ...props }) => (
-                    <p className="text-sm sm:text-base text-gray-700 mb-4 sm:mb-5 last:mb-0 leading-relaxed break-words" {...props}>
+                    <p className="text-sm sm:text-base text-gray-700 mb-4 sm:mb-5 last:mb-0 leading-relaxed wrap-break-word" {...props}>
                       {children}
                     </p>
                   ),
@@ -188,7 +188,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                 li: {
                   component: ({ children, ...props }) => (
                     <li className="flex items-start text-gray-700" {...props}>
-                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full mt-2 mr-2 sm:mr-3 flex-shrink-0"></span>
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-400 rounded-full mt-2 mr-2 sm:mr-3 shrink-0"></span>
                       <span className="text-sm sm:text-base">{children}</span>
                     </li>
                   ),
@@ -244,7 +244,7 @@ export default function TripPlanDisplay({ tripPlan }: TripPlanDisplayProps) {
                 },
                 code: {
                   component: ({ children, ...props }) => (
-                    <code className="break-words whitespace-pre-wrap bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs sm:text-sm font-mono" {...props}>
+                    <code className="wrap-break-word whitespace-pre-wrap bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs sm:text-sm font-mono" {...props}>
                       {children}
                     </code>
                   ),

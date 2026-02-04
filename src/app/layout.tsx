@@ -2,8 +2,20 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from '../components/AuthProvider';
 import Header from '../components/Header';
+import Footer from "../components/Footer";
 import JsonLd from "../components/JsonLd";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, absoluteUrl } from "../lib/seo";
+import GoogleAnalytics from "../components/GoogleAnalytics";
+import {
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_IMAGE_ALT,
+  organizationJsonLd,
+  productJsonLd,
+  softwareAppJsonLd,
+  websiteJsonLd,
+} from "../lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -12,6 +24,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  keywords: [...SITE_KEYWORDS],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -19,12 +32,13 @@ export const metadata: Metadata = {
     title: SITE_NAME,
     siteName: SITE_NAME,
     description: SITE_DESCRIPTION,
+    locale: "en_US",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — AI trip planning`,
+        alt: SOCIAL_IMAGE_ALT,
       },
     ],
   },
@@ -34,6 +48,8 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: ["/twitter-image"],
   },
+  formatDetection: { telephone: false, address: false, email: false },
+  verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
   robots:
     process.env.VERCEL_ENV === "production"
       ? {
@@ -60,22 +76,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      name: SITE_NAME,
-      url: SITE_URL,
-      description: SITE_DESCRIPTION,
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: absoluteUrl("/favicon.ico"),
-    },
-  ];
+  const jsonLd = [websiteJsonLd(), organizationJsonLd(), softwareAppJsonLd(), productJsonLd()];
 
   return (
     <html lang="en">
@@ -86,9 +87,11 @@ export default function RootLayout({
         className="antialiased bg-blue-50 min-h-screen"
         suppressHydrationWarning
       >
+        <GoogleAnalytics />
         <AuthProvider>
           <Header />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>

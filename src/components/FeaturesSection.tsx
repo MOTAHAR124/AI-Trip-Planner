@@ -39,10 +39,10 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Why Choose Our AI Trip Planner?
+            Why Choose This AI Travel Planner?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Experience the perfect blend of technology and travel expertise with our AI-powered trip planning platform.
+            Smart travel planning made simple: generate a complete itinerary with routes, pacing, and recommendations that match your style.
           </p>
         </div>
 
@@ -50,12 +50,12 @@ export default function FeaturesSection() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
+              className="group bg-white rounded-2xl p-8 shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:border-blue-200 hover:bg-blue-50/40 motion-reduce:transform-none"
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <feature.icon className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 transition-colors group-hover:bg-blue-200/70">
+                <feature.icon className="w-6 h-6 text-blue-600 group-hover:text-blue-700 transition-colors" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-800 transition-colors">
                 {feature.title}
               </h3>
               <p className="text-gray-600 leading-relaxed">
