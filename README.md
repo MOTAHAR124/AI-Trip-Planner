@@ -80,7 +80,7 @@ Built with Next.js 15, React 19, Tailwind CSS 4, and LangChain + Google Gemini 2
 
 ### Prerequisites
 
-- Node.js 18+ and Yarn (Classic)
+- Node.js 18+ and pnpm
 - Google Generative AI API key (Gemini)
 
 ### Clone and Install
@@ -91,7 +91,7 @@ git clone https://github.com/MOTAHAR124/AI-Trip-Planner.git
 cd AI-Trip-Planner
 
 # Install deps
-yarn install
+pnpm install
 ```
 
 ### Environment Variables
@@ -140,11 +140,11 @@ NEXT_PUBLIC_GOOGLE_API_KEY=your_client_side_gemini_key
 
 ```bash
 # Dev server
-yarn dev
+pnpm dev
 # Build
-yarn build
+pnpm build
 # Start production build
-yarn start
+pnpm start
 ```
 
 Open http://localhost:3000
@@ -244,10 +244,10 @@ Notes:
 From `package.json`:
 
 ```bash
-yarn dev     # Start dev server
-yarn build   # Build for production
-yarn start   # Start production server
-yarn lint    # Lint the project
+pnpm dev     # Start dev server
+pnpm build   # Build for production
+pnpm start   # Start production server
+pnpm lint    # Lint the project
 ```
 
 ---
@@ -275,8 +275,7 @@ GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 # NEXTAUTH_URL=http://localhost:3000    # set in production too
 ```
 
-4. Restart the dev server: `npm run dev`.
-   - With Yarn: `yarn dev`.
+4. Restart the dev server: `pnpm dev`.
 5. Wire a sign-in button in your UI (optional) using `next-auth`:
    - In a client component: `import { signIn } from "next-auth/react";` then `onClick={() => signIn('google')}`.
    - Or navigate to `/api/auth/signin` to use the default NextAuth sign-in page.
