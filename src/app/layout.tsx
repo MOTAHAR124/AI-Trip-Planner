@@ -12,8 +12,7 @@ import {
   SITE_URL,
   SOCIAL_IMAGE_ALT,
   organizationJsonLd,
-  productJsonLd,
-  softwareAppJsonLd,
+  webApplicationJsonLd,
   websiteJsonLd,
 } from "../lib/seo";
 
@@ -76,7 +75,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = [websiteJsonLd(), organizationJsonLd(), softwareAppJsonLd(), productJsonLd()];
+  const jsonLd = [websiteJsonLd(), organizationJsonLd(), webApplicationJsonLd()];
 
   return (
     <html lang="en">

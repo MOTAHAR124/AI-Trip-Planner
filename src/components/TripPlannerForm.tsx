@@ -4,7 +4,7 @@ import { useForm, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useState, useEffect } from 'react';
-import TripPlanDisplay from './TripPlanDisplay';
+import dynamic from 'next/dynamic';
 import LoadingSkeleton from './LoadingSkeleton';
 import LocationSection from './sections/LocationSection';
 import TravelDetailsSection from './sections/TravelDetailsSection';
@@ -17,6 +17,11 @@ import {
   TripPlanRequest, 
   tripPlannerSchema 
 } from '../types/tripPlanner';
+
+const TripPlanDisplay = dynamic<{ tripPlan: string }>(
+  () => import("./TripPlanDisplay.js").then((mod) => mod.default),
+  { loading: () => <LoadingSkeleton /> }
+);
 
 export default function TripPlannerForm() {
   const [isLoading, setIsLoading] = useState(false);

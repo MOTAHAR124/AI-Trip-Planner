@@ -39,7 +39,7 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Why Choose This AI Travel Planner?
+            Why Choose Our AI Travel Planner?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Smart travel planning made simple: generate a complete itinerary with routes, pacing, and recommendations that match your style.

@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_URL } from "../../lib/seo";
+import JsonLd from "../../components/JsonLd";
+import { SITE_NAME, SITE_URL, breadcrumbJsonLd } from "../../lib/seo";
 
 export const metadata: Metadata = {
-  title: `Terms of Service | ${SITE_NAME}`,
-  description: "Terms of service for AI Trip Planner.",
+  title: "Terms of Service",
+  description: `Terms of service for ${SITE_NAME}: acceptable use, limitations, and disclaimers for AI-generated itineraries.`,
   alternates: { canonical: `${SITE_URL}/terms` },
 };
 
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-blue-100">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Terms of Service", path: "/terms" }])} />
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Terms of Service</h1>
@@ -31,4 +33,3 @@ export default function TermsPage() {
     </main>
   );
 }
-

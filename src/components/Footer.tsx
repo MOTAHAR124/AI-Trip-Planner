@@ -17,6 +17,12 @@ export default function Footer() {
             <Link href="/blog" className="text-gray-700 hover:text-gray-900">
               Blog
             </Link>
+            <Link href="/about" className="text-gray-700 hover:text-gray-900">
+              About
+            </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-gray-900">
+              Contact
+            </Link>
             <Link href="/privacy" className="text-gray-700 hover:text-gray-900">
               Privacy
             </Link>
@@ -35,4 +41,3 @@ export default function Footer() {
     </footer>
   );
 }
-

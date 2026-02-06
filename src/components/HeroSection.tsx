@@ -18,20 +18,19 @@ export default function HeroSection() {
             <HeroGreeting />
 
             <h1 id="hero-title" className="text-5xl font-bold text-gray-900 leading-tight">
-              {`AI Trip Planner for `}
-              <span className="text-blue-600">smart travel planning</span>
+              {`AI Trip Planner & `}
+              <span className="text-blue-600">Travel Itinerary Generator</span>
             </h1>
 
             <p className="text-xl text-gray-600 leading-relaxed">
-              Build a personalized, day-by-day itinerary in seconds with our AI travel planner and
-              travel itinerary generator—routes, attractions, food picks, and hotel suggestions
-              tailored to your preferences.
+              Plan smarter with an AI travel planner that builds a personalized, day-by-day itinerary in
+              seconds—routes, attractions, food picks, and hotel suggestions tailored to your preferences.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="#planner"
-                aria-label="Jump to the trip planner"
+                aria-label="Open the AI trip planner"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
               >
                 Start Planning

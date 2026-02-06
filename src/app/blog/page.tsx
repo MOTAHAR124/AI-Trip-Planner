@@ -1,25 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_NAME, SITE_URL } from "../../lib/seo";
+import JsonLd from "../../components/JsonLd";
+import { SITE_NAME, SITE_URL, breadcrumbJsonLd } from "../../lib/seo";
 
 export const metadata: Metadata = {
-  title: "AI Trip Planner Blog: AI Travel Planning Guides",
+  title: "AI Travel Planning Guides",
   description:
-    "Actionable guides for AI travel planning: learn how to use an AI trip planner, build better itineraries, and plan smarter trips.",
+    "Actionable guides for AI travel planning: learn how to use an AI trip planner, build realistic itineraries, and plan smarter trips.",
   alternates: { canonical: `${SITE_URL}/blog` },
 };
 
 export default function BlogPage() {
   return (
     <main className="relative min-h-screen bg-linear-to-b from-blue-400 to-blue-100">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }])} />
       <div className="absolute inset-0 opacity-10" aria-hidden="true">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
       </div>
       <section className="relative py-16">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{SITE_NAME} Blog</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">AI Travel Planning Guides</h1>
           <p className="text-gray-700">
-            Practical tips for smart travel planning—get more value from an AI travel planner and create better day-by-day itineraries.
+            Practical tips for smart travel planning—get more value from {SITE_NAME} and create better day-by-day itineraries.
           </p>
 
           <div className="mt-10 bg-blue-50/70 rounded-2xl p-8 shadow-lg border border-blue-100">

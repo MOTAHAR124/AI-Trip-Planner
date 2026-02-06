@@ -3,7 +3,7 @@ export default function HowItWorksSection() {
     <section id="how-it-works" className="py-20 bg-blue-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">How the AI Trip Planner works</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">How the AI Trip Planner Works</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Create a complete itinerary in minutes—perfect for weekend getaways or multi-day trips.
           </p>

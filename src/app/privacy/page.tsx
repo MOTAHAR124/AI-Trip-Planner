@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_URL } from "../../lib/seo";
+import JsonLd from "../../components/JsonLd";
+import { SITE_NAME, SITE_URL, breadcrumbJsonLd } from "../../lib/seo";
 
 export const metadata: Metadata = {
-  title: `Privacy Policy | ${SITE_NAME}`,
-  description: "Privacy policy for AI Trip Planner.",
+  title: "Privacy Policy",
+  description: `Privacy policy for ${SITE_NAME}: how trip details are processed and how analytics (if enabled) is used.`,
   alternates: { canonical: `${SITE_URL}/privacy` },
 };
 
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-blue-100">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Privacy Policy", path: "/privacy" }])} />
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
@@ -36,4 +38,3 @@ export default function PrivacyPage() {
     </main>
   );
 }
-
